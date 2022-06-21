@@ -20,10 +20,10 @@ https://pictec.ledes.net/detalhes/43
 O trabalho tem como proposta o desenvolvimento de um protótipo de chatbot com o objetivo de apoiar, por meio da tecnologia a ser desenvolvida, a conscientização e a prevenção o do câncer do colo do útero no contexto do sistema de saúde pública de Mato Grosso do Sul, tendo como meio para a validação da proposta o município de Nova Andradina.
 
 **Coordenador:**
-Luiz Fernando Picolo
+Professor Me. Luiz Fernando Picolo
 
-**Pesquisada Participanete**
-Letícia de Godoy Enz
+**Pesquisadas Participanetes**
+Professora Me. Letícia de Godoy Enz e Enfermeira Esf. Cláudia de Souza
 
 **Bolsistas:**
 Guilherme Ferreira Tombini, 
@@ -53,19 +53,24 @@ Altere as configurações para acesso ao banco de dados. Para tanto, renomeie o 
 No momento, nosso Bot da suporte apenas ao Telegram. Logo, altere os dados para acesso ao seu Bot criado por meio do **BotFather**. Para isso, renomeie o arquivo `config/telegran.example.js` para `config/telegran.js` e adicone o token para o atributos.
 
     module.exports = {
-      token: ''
+      // Telegran
+      token: '',
+
+      // WhatsApp
+      accountSid: '',
+      authToken: ''
     }
 
 Após as configurações iniciais, vamos configurar o projeto junto ao docker.
 
     docker-compose build 
-    docker-compose run web npm install
-    docker-compose run web npx sequelize db:create
-    docker-compose run web npx sequelize db:migrate
+    docker-compose run web yarn install
+    docker-compose run web yarn sequelize db:create
+    docker-compose run web yarn sequelize db:migrate
 
 Agora, criaremos o primeiro usuário 
 
-    docker-compose run web npx sequelize db:seed:all  
+    docker-compose run web yarn sequelize db:seed:all  
 
 Por fim, se tudo correr normalmente, iniciaremos o projeto e acessaremos o admin por meio do link http://localhost:3000 com usuário e senha presente no arquivo `database/seeders/20220411005746-usuario_admin.js`
 
