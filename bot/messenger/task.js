@@ -27,8 +27,6 @@ schedule.scheduleJob('0 8/8 * * *', async () => {
     },
   });
 
-  var pacientes = await Paciente.findAll({});
-
   agendamentos.forEach(agenda => {
     let paciente = agenda.paciente
     const msg = `Olá, ${paciente.name}, seu exame está chegando perto, ele está agendado para ${moment(agenda.data_agendamento).format('LLL')} na ${paciente.esf.name}. \n\n Aguardamos sua presença 😘`; 
@@ -42,27 +40,34 @@ schedule.scheduleJob('0 8/8 * * *', async () => {
     }
   });
 
-  pacientes.forEach(inatividade => {
-   let time;
-   let paciente = inatividade.paciente;
-   
-   function setMensagem(){
-    const msg = `Como faz um tempinho que não se falamos, esse atendimento será finalizado! \n\n Obrigado pelo seu contato ${paciente.name} 😃👍🏻 {topic=random}`;
-    if (paciente.telegran_id){
-       bot.sendMessage(paciente.telegran_id, msg);
-    } 
-    if (paciente.whatsapp_id){
-        client.messages.create({from: Secrets.whatsapp.from, body: msg, to: `whatsapp:${paciente.whatsapp_id}`})
-    }
-   }
-
-   function resetTimer() {
-    clearTimeout(time);
-    time = setTimeout(setMensagem, 5000)
-   }
-
-   return resetTimer();
-
-  })
 });
+
+schedule.scheduleJob('0 8/8 * * *', async () => {
+  
+  var pacientes = await Paciente.findAll({});
+
+  pacientes.forEach(inatividade => {
+    let time;
+    let paciente = inatividade.paciente;
+    
+    function setMensagem(){
+     const msg = `Como faz um tempinho que não se falamos, esse atendimento será finalizado! \n\n Obrigado pelo seu contato ${paciente.name} 😃👍🏻 {topic=random}`;
+     if (paciente.telegran_id){
+        bot.sendMessage(paciente.telegran_id, msg);
+     } 
+     if (paciente.whatsapp_id){
+         client.messages.create({from: Secrets.whatsapp.from, body: msg, to: `whatsapp:${paciente.whatsapp_id}`})
+     }
+    }
+ 
+    function resetTimer() {
+     clearTimeout(time);
+     time = setTimeout(setMensagem, 5000)
+    }
+ 
+    return resetTimer();
+ 
+   })
+
+})
 
