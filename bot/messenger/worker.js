@@ -11,6 +11,7 @@ const chatbot = new ChatBot();
 
 const jobs = {
   add: async(msg) => {
+  // Salvar as mensagens 
     if (msg.message){
       const chatId = msg.message.chat.id;
       const resp = await chatbot.loading_done(latinize(msg.message.text), chatId, 'telegran')
